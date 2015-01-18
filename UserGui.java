@@ -232,10 +232,12 @@ public class UserGui
 		 *  ananeonoume ta label gia na pernoun tin sosti timi*/
 		ticketsPane.getDocument().addDocumentListener(new DocumentListener() 
 		{
+			
 			  /**to action ginete otan alazoume enan airthmo tou pane*/
 			  public void changedUpdate(final DocumentEvent change) 
 			  {
-				  updatePrice();
+				  
+						updatePrice();
 			  }
 			  /**to action ginete otan svinoume enan arithmo apo to pane*/
 			  public void removeUpdate(final DocumentEvent removal) 
@@ -251,14 +253,14 @@ public class UserGui
 			  /**ananeonei ta labels me to sosto kostos eisitirion*/
 			  public void updatePrice() 
 			  {
-				  try 
-				  {
-					  refreshLabels(false);
-				  }
-				  catch(NumberFormatException ex) 
-				  {
-					  ex.printStackTrace();
-				  }
+				  	  try 
+					  {
+						  refreshLabels(false);
+					  }
+				  	  catch(NumberFormatException ex) 
+				  	  {
+				  		  ex.printStackTrace();
+				  	  }
 			  }
 				
 		});
@@ -269,39 +271,51 @@ public class UserGui
 			/**to action eine to patima tou koubiou*/
 			public void actionPerformed(final ActionEvent buttonPress) 
 			{
-				/**elenxoume an o arithmos isitirion pou theloume eine 
-				 * megaliteros apo ton arithmo diathesimon eisitirion gia afti tin sinavlia-seira
-				 *An theloume ligotera eisitiria apo osa iparxoun petame 
-				 *ena minima oti ta eisitiria ektipononte, ke alazoume ton arithmo 
-				 *ton diathesimon eisitirion apo tin vasi dedomenon
-				 *me to function updateAvailableSeats tou Database_connector*/
-				if(Integer.parseInt(ticketsPane.getText())<=availableTickets)
+				if(ticketsPane.getText().isEmpty())
 				{
-					if ( seatBox.getSelectedIndex() ==A_SEIRA)
-					{
-						connector.updateAvailableSeats("available_expensive_tickets", concertBox.getSelectedItem().toString(), ticketsPane.getText());
-					} 
-					else if ( seatBox.getSelectedIndex() == B_SEIRA)
-                  	{
-						connector.updateAvailableSeats("available_normal_tickets", concertBox.getSelectedItem().toString(), ticketsPane.getText());
-                  	} 
-                  	else 
-                  	{
-						connector.updateAvailableSeats("available_cheap_tickets", concertBox.getSelectedItem().toString(), ticketsPane.getText());
-                  	}
-					/** an o xristeis zitaei pano apo 0 eisitiria
-					 * tote petame minima oti ektipononte*/
-					if(Integer.parseInt(ticketsPane.getText())>0)
-					{
-						JOptionPane.showMessageDialog(frame, "Printing...");
-					}
-					refreshLabels(true);
+					JOptionPane.showMessageDialog(frame, "Τo Field Είναι Αδειο");
 				}
-				/**an theloume perisotera eisitiria apo osa iparxoun, peta ena error message*/
+				else if (!StringCheck.isNumeric(ticketsPane.getText()))
+				{
+					JOptionPane.showMessageDialog(frame, "Τo Field Εχει Γράμματα αντί για Αριθμό");
+				}
 				else
 				{
-					JOptionPane.showMessageDialog(frame, "Not Enough Tickets Available");
+					/**elenxoume an o arithmos isitirion pou theloume eine 
+					 * megaliteros apo ton arithmo diathesimon eisitirion gia afti tin sinavlia-seira
+					 *An theloume ligotera eisitiria apo osa iparxoun petame 
+					 *ena minima oti ta eisitiria ektipononte, ke alazoume ton arithmo 
+					 *ton diathesimon eisitirion apo tin vasi dedomenon
+					 *me to function updateAvailableSeats tou Database_connector*/
+					if(Integer.parseInt(ticketsPane.getText())<=availableTickets)
+					{
+						if ( seatBox.getSelectedIndex() ==A_SEIRA)
+						{
+							connector.updateAvailableSeats("available_expensive_tickets", concertBox.getSelectedItem().toString(), ticketsPane.getText());
+						} 
+						else if ( seatBox.getSelectedIndex() == B_SEIRA)
+	                  	{
+							connector.updateAvailableSeats("available_normal_tickets", concertBox.getSelectedItem().toString(), ticketsPane.getText());
+	                  	} 
+	                  	else 
+	                  	{
+							connector.updateAvailableSeats("available_cheap_tickets", concertBox.getSelectedItem().toString(), ticketsPane.getText());
+	                  	}
+						/** an o xristeis zitaei pano apo 0 eisitiria
+						 * tote petame minima oti ektipononte*/
+						if(Integer.parseInt(ticketsPane.getText())>0)
+						{
+							JOptionPane.showMessageDialog(frame, "Τα Εισιτήρια Εκτυπώνονται");
+						}
+						refreshLabels(true);
+					}
+					/**an theloume perisotera eisitiria apo osa iparxoun, peta ena error message*/
+					else
+					{
+						JOptionPane.showMessageDialog(frame, "Επιλέξτε Μικρότερο Αριθμό Εισιτηρίων");
+					}
 				}
+				
 			}
 		});
 		
@@ -347,9 +361,8 @@ public class UserGui
 	    		availableTicketsLabel.setText("Διαθέσιμες Θέσεις: "+availableTickets);
     		}
     		
-    		/**an o xristis den exei kamia timi sto ticketsPane
-    		 * tote den kanoume kanenan ipologismo gia to kostos ton isitirion*/
-    		if(ticketsPane.getText().equals(""))
+    		/** elenxei an to ticketsPane exei grammata i eine adeio*/
+    		if((ticketsPane.getText().isEmpty())||(!StringCheck.isNumeric(ticketsPane.getText())))
 	    	{
 	    		ticketsCostLabel.setText("Κόστος εισιτηρίων: ");
 	    	}
@@ -371,7 +384,8 @@ public class UserGui
 	    		availableTickets=Integer.parseInt(connector.availableSeatsSelect ("available_normal_tickets", concertBox.getSelectedItem().toString()));
 	        	availableTicketsLabel.setText("Διαθέσιμες Θέσεις: "+availableTickets);
     		}
-	        if(ticketsPane.getText().equals(""))
+    		/** elenxei an to ticketsPane exei grammata i eine adeio*/
+	        if((ticketsPane.getText().isEmpty())||(!StringCheck.isNumeric(ticketsPane.getText())))
 	       	{
 	        	ticketsCostLabel.setText("Κόστος εισιτηρίων: ");
 	       	}
@@ -389,7 +403,8 @@ public class UserGui
 	   			availableTickets=Integer.parseInt(connector.availableSeatsSelect ("available_cheap_tickets", concertBox.getSelectedItem().toString()));
 	       		availableTicketsLabel.setText("Διαθέσιμες Θέσεις: "+availableTickets);
     		}
-	       	if(ticketsPane.getText().equals(""))
+    		/** elenxei an to ticketsPane exei grammata i eine adeio*/
+    		if((ticketsPane.getText().isEmpty())||(!StringCheck.isNumeric(ticketsPane.getText())))
 	       	{
 	       		ticketsCostLabel.setText("Κόστος εισιτηρίων: ");
 	       	}

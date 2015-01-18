@@ -16,9 +16,15 @@ import java.awt.event.WindowEvent;
  * parathirou gia ta statistika*/
 public class StatsGui {
 
+	
+
+	/**i sindesi me tin vasi dedomenon*/
+	private transient Database_connector connector;
+	
 	/**to frame tou programmatos*/
 	public transient JFrame frame;
 
+	
 	/**
 	 * Create the application.
 	 */
@@ -37,7 +43,7 @@ public class StatsGui {
 		frame.getContentPane().setLayout(null);
 
 		/**sindeomaste me tin vasi dedomenon*/
-		final Database_connector connector= new Database_connector();
+		connector= new Database_connector();
 		connector.startConn();
 		
 		/**to comboBox pou periexei tis sinavlies*/

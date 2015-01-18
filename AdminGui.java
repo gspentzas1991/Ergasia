@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JEditorPane;
 
@@ -334,21 +335,39 @@ public class AdminGui
 		{
 			public void actionPerformed(final ActionEvent buttonPressed) 
 			{
-				/**vriskoume tin seira eisitirion tis sinavlias pou theloume na epeksergastoume*/
-	           	if ( seatBox.getSelectedIndex() == A_SEIRA )
-	           	{
-	           		connector.update(concertBox.getSelectedItem().toString(), "available_expensive_tickets", newSeatsPane.getText(),"total_expensive_tickets",newTotalSeatsPane.getText(), "expensive_ticket_price", newCostPane.getText());
-	           	} 
-	           	else if ( seatBox.getSelectedIndex() == B_SEIRA )
-	           	{
-	           		connector.update(concertBox.getSelectedItem().toString(), "available_normal_tickets", newSeatsPane.getText(),"total_normal_tickets",newTotalSeatsPane.getText(), "normal_ticket_price", newCostPane.getText());
-	           	} 
-	           	else 
-	           	{
-	           		connector.update(concertBox.getSelectedItem().toString(), "available_cheap_tickets", newSeatsPane.getText(),"total_normal_tickets",newTotalSeatsPane.getText(), "cheap_ticket_price", newCostPane.getText());
-	           	}
-	           	
-				refreshLabels();
+				/** elenxoume an o diaxiristis 
+				 * afise kapio field adeio
+				 */
+				if((newSeatsPane.getText().isEmpty())||(newTotalSeatsPane.getText().isEmpty())||(newCostPane.getText().isEmpty()))
+				{
+					JOptionPane.showMessageDialog(frame, "Κάποιο Field Είναι Αδειο");
+				}
+				
+				/** elenxoume an o diaxiristis evale keimeno 
+				 * se kapio field pou perimenei arithmo
+				 */
+				else if(!(StringCheck.isNumeric(newSeatsPane.getText()))||!(StringCheck.isNumeric(newTotalSeatsPane.getText())) ||!(StringCheck.isNumeric(newCostPane.getText())))
+				{
+					JOptionPane.showMessageDialog(frame, "Κάποιο Field Εχει Κείμενο Αντί Για Αριθμό");
+				}
+				else
+				{
+					/**vriskoume tin seira eisitirion tis sinavlias pou theloume na epeksergastoume*/
+		           	if ( seatBox.getSelectedIndex() == A_SEIRA )
+		           	{
+		           		connector.update(concertBox.getSelectedItem().toString(), "available_expensive_tickets", newSeatsPane.getText(),"total_expensive_tickets",newTotalSeatsPane.getText(), "expensive_ticket_price", newCostPane.getText());
+		           	} 
+		           	else if ( seatBox.getSelectedIndex() == B_SEIRA )
+		           	{
+		           		connector.update(concertBox.getSelectedItem().toString(), "available_normal_tickets", newSeatsPane.getText(),"total_normal_tickets",newTotalSeatsPane.getText(), "normal_ticket_price", newCostPane.getText());
+		           	} 
+		           	else 
+		           	{
+		           		connector.update(concertBox.getSelectedItem().toString(), "available_cheap_tickets", newSeatsPane.getText(),"total_normal_tickets",newTotalSeatsPane.getText(), "cheap_ticket_price", newCostPane.getText());
+		           	}
+		           	
+					refreshLabels();
+				}
 	        }
 		});
 	
@@ -373,11 +392,33 @@ public class AdminGui
 		{
 			public void actionPerformed(final ActionEvent buttonPressed)
 			{
-				connector.create(newConcertPane.getText(), aZoneSeatsPane.getText(),aZoneCostPane.getText() , bZoneSeatsPane.getText(),bZoneCostPane.getText() , cZoneCostPane.getText(), cZoneSeatsPane.getText());
-				/**dinoume tous titlous ton sinavlion apo tin vasi dedomenon 
-				 * sto concertBox me to function titleSelect() tou Database_connector*/
-				concertBox.setModel(connector.titleSelect());
-				seatBox.setSelectedIndex(0);
+				/** elenxoume an o diaxiristis 
+				 * afise kapio field adeio
+				 */
+				if((newConcertPane.getText().isEmpty())||(aZoneSeatsPane.getText().isEmpty())||(aZoneCostPane.getText().isEmpty())
+						||(bZoneSeatsPane.getText().isEmpty())||(bZoneCostPane.getText().isEmpty())
+						||(cZoneSeatsPane.getText().isEmpty())||(cZoneCostPane.getText().isEmpty()))
+				{
+					JOptionPane.showMessageDialog(frame, "Κάποιο Field Είναι Αδειο");
+				}
+				
+				/** elenxoume an o diaxiristis evale keimeno 
+				 * se kapio field pou perimenei arithmo
+				 */
+				else if(!(StringCheck.isNumeric(aZoneSeatsPane.getText()))||!(StringCheck.isNumeric(aZoneCostPane.getText()))
+						||!(StringCheck.isNumeric(bZoneSeatsPane.getText()))||!(StringCheck.isNumeric(bZoneCostPane.getText()))
+						||!(StringCheck.isNumeric(cZoneSeatsPane.getText()))||!(StringCheck.isNumeric(cZoneCostPane.getText())))
+				{
+					JOptionPane.showMessageDialog(frame, "Κάποιο Field Εχει Κείμενο Αντί Για Αριθμό");
+				}
+				else
+				{
+					connector.create(newConcertPane.getText(), aZoneSeatsPane.getText(),aZoneCostPane.getText() , bZoneSeatsPane.getText(),bZoneCostPane.getText() , cZoneCostPane.getText(), cZoneSeatsPane.getText());
+					/**dinoume tous titlous ton sinavlion apo tin vasi dedomenon 
+					 * sto concertBox me to function titleSelect() tou Database_connector*/
+					concertBox.setModel(connector.titleSelect());
+					seatBox.setSelectedIndex(0);
+				}
 			}
 		});
 		
