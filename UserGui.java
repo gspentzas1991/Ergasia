@@ -34,7 +34,7 @@ public class UserGui
 	private static final int B_SEIRA= 1;
 	
 	
-	
+
 	/** variables */
 	
 	/**to frame tou programmatos*/
@@ -362,7 +362,7 @@ public class UserGui
     		}
     		
     		/** elenxei an to ticketsPane exei grammata i eine adeio*/
-    		if((ticketsPane.getText().isEmpty())||(!StringCheck.isNumeric(ticketsPane.getText())))
+    		if(ticketsPane.getText().isEmpty()||!StringCheck.isNumeric(ticketsPane.getText()))
 	    	{
 	    		ticketsCostLabel.setText("Κόστος εισιτηρίων: ");
 	    	}
@@ -385,7 +385,7 @@ public class UserGui
 	        	availableTicketsLabel.setText("Διαθέσιμες Θέσεις: "+availableTickets);
     		}
     		/** elenxei an to ticketsPane exei grammata i eine adeio*/
-	        if((ticketsPane.getText().isEmpty())||(!StringCheck.isNumeric(ticketsPane.getText())))
+	        if(ticketsPane.getText().isEmpty()||!StringCheck.isNumeric(ticketsPane.getText()))
 	       	{
 	        	ticketsCostLabel.setText("Κόστος εισιτηρίων: ");
 	       	}
@@ -404,7 +404,7 @@ public class UserGui
 	       		availableTicketsLabel.setText("Διαθέσιμες Θέσεις: "+availableTickets);
     		}
     		/** elenxei an to ticketsPane exei grammata i eine adeio*/
-    		if((ticketsPane.getText().isEmpty())||(!StringCheck.isNumeric(ticketsPane.getText())))
+    		if(ticketsPane.getText().isEmpty()||!StringCheck.isNumeric(ticketsPane.getText()))
 	       	{
 	       		ticketsCostLabel.setText("Κόστος εισιτηρίων: ");
 	       	}

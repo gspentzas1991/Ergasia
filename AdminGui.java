@@ -338,7 +338,7 @@ public class AdminGui
 				/** elenxoume an o diaxiristis 
 				 * afise kapio field adeio
 				 */
-				if((newSeatsPane.getText().isEmpty())||(newTotalSeatsPane.getText().isEmpty())||(newCostPane.getText().isEmpty()))
+				if(newSeatsPane.getText().isEmpty()||newTotalSeatsPane.getText().isEmpty()||newCostPane.getText().isEmpty())
 				{
 					JOptionPane.showMessageDialog(frame, "Κάποιο Field Είναι Αδειο");
 				}
@@ -395,9 +395,9 @@ public class AdminGui
 				/** elenxoume an o diaxiristis 
 				 * afise kapio field adeio
 				 */
-				if((newConcertPane.getText().isEmpty())||(aZoneSeatsPane.getText().isEmpty())||(aZoneCostPane.getText().isEmpty())
-						||(bZoneSeatsPane.getText().isEmpty())||(bZoneCostPane.getText().isEmpty())
-						||(cZoneSeatsPane.getText().isEmpty())||(cZoneCostPane.getText().isEmpty()))
+				if(newConcertPane.getText().isEmpty()||aZoneSeatsPane.getText().isEmpty()||aZoneCostPane.getText().isEmpty()
+						||bZoneSeatsPane.getText().isEmpty()||bZoneCostPane.getText().isEmpty()
+						||cZoneSeatsPane.getText().isEmpty()||cZoneCostPane.getText().isEmpty())
 				{
 					JOptionPane.showMessageDialog(frame, "Κάποιο Field Είναι Αδειο");
 				}
@@ -405,9 +405,9 @@ public class AdminGui
 				/** elenxoume an o diaxiristis evale keimeno 
 				 * se kapio field pou perimenei arithmo
 				 */
-				else if(!(StringCheck.isNumeric(aZoneSeatsPane.getText()))||!(StringCheck.isNumeric(aZoneCostPane.getText()))
-						||!(StringCheck.isNumeric(bZoneSeatsPane.getText()))||!(StringCheck.isNumeric(bZoneCostPane.getText()))
-						||!(StringCheck.isNumeric(cZoneSeatsPane.getText()))||!(StringCheck.isNumeric(cZoneCostPane.getText())))
+				else if (!StringCheck.isNumeric(aZoneSeatsPane.getText())||!StringCheck.isNumeric(aZoneCostPane.getText())
+						||!StringCheck.isNumeric(bZoneSeatsPane.getText())||!StringCheck.isNumeric(bZoneCostPane.getText())
+						||!StringCheck.isNumeric(cZoneSeatsPane.getText())||!StringCheck.isNumeric(cZoneCostPane.getText()))
 				{
 					JOptionPane.showMessageDialog(frame, "Κάποιο Field Εχει Κείμενο Αντί Για Αριθμό");
 				}

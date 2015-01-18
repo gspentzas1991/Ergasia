@@ -30,7 +30,7 @@ public class Database_connector
     	this.dbName = "ticketsdb";
     	this.driver = "com.mysql.jdbc.Driver";
         this.userName = "root";
-        this.password = "";
+        this.password = "J5316826";
     }
     
     /**Ksekiname mia sindesi me tin Mysql*/

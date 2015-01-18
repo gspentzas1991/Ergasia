@@ -1,23 +1,26 @@
 package seat_administration;
 
-
-public class StringCheck 
+/**I klasi tha periexei methodous pou
+ * exoun na kanoun me Strings
+ */
+public final class StringCheck 
 {
 	
 	/** Pernei ena String ke elenxei an exei 
 	 * mesa keimeno i arithmous
 	 */
-	public static boolean isNumeric(String str)  
+	public static boolean isNumeric(final String str)  
 	{  
+		boolean flag=true;
 	  try  
 	  {  
-	    double d = Double.parseDouble(str);  
+		 Double.parseDouble(str);  
 	  }  
-	  catch(NumberFormatException nfe)  
+	  catch(NumberFormatException isNotNumber)  
 	  {  
-	    return false;  
+	    flag=false;  
 	  }  
-	  return true;  
+	  return flag;  
 	}
 
 }

@@ -169,7 +169,7 @@ public class StatsGui {
 				 connector.stopConn();
 			}
 		});
-		
+	
 		
 		/**otan epilegoume kapia sinavlia, theloume ta 
 		 * labels na pernoun tis antistixes times*/
