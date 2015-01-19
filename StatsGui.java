@@ -37,6 +37,7 @@ public class StatsGui {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setTitle("\u03A3\u03C4\u03B1\u03C4\u03B9\u03C3\u03C4\u03B9\u03BA\u03AC");
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 600, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
