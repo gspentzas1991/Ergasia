@@ -1,4 +1,4 @@
-# Ticket_Reservation_Program_Assignment
+# Ticket Reservation Program Assignment
 A program written in Java for the "Software Engineering" class of Computer Systems Engineering on Pireaus University of Applied Sciences
 
 The program consists of 3 different frames:
