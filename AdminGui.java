@@ -15,43 +15,40 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.Font;
 
-/** I klasi i opia dimiourgei to frame tou
- * parathirou gia ton diaxiristi*/
+/** The class that creates the frame for the admin*/
 public class AdminGui 
 {
 
 	/**defines*/
 	
-	/** dixnei oti ta eisitiria pou epileksame
-	 * eine A seiras */
+	/** flag to show that the tickets are of type A (expensive) */
 	private static final int A_SEIRA= 0;
 	
-	/** dixnei oti ta eisitiria pou epileksame
-	 * eine B seiras */
+	/** flag to show that the tickets are of type B (regular) */
 	private static final int B_SEIRA= 1;
 
 	
 	/** variables */
 	
-	/**to frame tou programmatos*/
+	/**The main frame of the program*/
 	public transient JFrame frame;
 
-	/**i sindesi me tin vasi dedomenon*/
+	/**The connector to the database*/
 	private transient Database_connector connector;
 	
-	/**to comboBox to opio exei mesa tou tis seires gia tis sinavlies*/
+	/**Stores the ticket type for the concert*/
 	private transient JComboBox<String> seatBox;
 	
-	/**to label pou leei poses sinolikes theseis iparxoun*/
+	/**Label to show the total of all tickets for the concert*/
 	private transient JLabel totalTicketsLabel;
 	
-	/**to comboBox to opio exei mesa tou tis sinavlies tis vasis dedomenon*/
+	/**Stores all the concerts*/
 	private transient JComboBox<String> concertBox;
 	
-	/**to label to opio mas leei poso tha eine to teliko kostos ton eisitirion*/
+	/**Label to show the final cost of the tickets*/
 	private transient JLabel ticketsCostLabel;
 	
-	/**to label pou leei poses diathesimes theseis exoun apominei*/
+	/**Label to show the number of available tickets for the concert*/
 	private transient JLabel availableTicketsLabel;
 	
 	
@@ -72,7 +69,7 @@ public class AdminGui
 	private void initialize() 
 	{
 		frame = new JFrame();
-		frame.setTitle("Σύστημα Διαχειριστή εισιτηρίων για συναυλίες");
+		frame.setTitle("Γ“Γ½Γ³Γ΄Γ§Γ¬Γ΅ Γ„Γ©Γ΅Γ·Γ¥Γ©Γ±Γ©Γ³Γ΄Γ Γ¥Γ©Γ³Γ©Γ΄Γ§Γ±ΓΓΉΓ­ Γ£Γ©Γ΅ Γ³ΓµΓ­Γ΅ΓµΓ«ΓΓ¥Γ²");
 		frame.setResizable(false);
 		frame.setAlwaysOnTop(true);
 		frame.setBounds(0, 0, 621, 706);
@@ -80,169 +77,158 @@ public class AdminGui
 		frame.getContentPane().setLayout(null);
 		
 		
-		final JLabel concertLabel = new JLabel("Επιλογή Συναυλίας:");
+		final JLabel concertLabel = new JLabel("Γ…Γ°Γ©Γ«Γ―Γ£Γ Γ“ΓµΓ­Γ΅ΓµΓ«ΓΓ΅Γ²:");
 		concertLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		concertLabel.setBounds(10, 80, 120, 20);
 		frame.getContentPane().add(concertLabel);
 
-		/**sindeomaste me tin vasi dedomenon*/
+		/**makes a connection to the database*/
 		connector= new Database_connector();
 		connector.startConn();
 		
-		/**to comboBox pou periexei tis sinavlies
-		*dinoume tous titlous ton sinavlion apo tin vasi dedomenon 
-		*sto concertBox me to function titleSelect() tou Database_connector*/
+		/*concertBox takes the titles of the concerts from the DB 
+		*through connector's titleSelect method*/
 		concertBox = new JComboBox<>(connector.titleSelect());
 		concertBox.setBounds(140, 80, 220, 20);
 		frame.getContentPane().add(concertBox);
 		
-		/**to comboBox pou periexei tis zones eisitirion*/
+		/*initialize seatBox */
 		seatBox = new JComboBox<>();
 		seatBox.setMaximumRowCount(20);
-		seatBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Α Ζώνη", "Β Ζώνη", "Γ Ζώνη"}));
+		seatBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Γ Γ†ΓΎΓ­Γ§", "Γ‚ Γ†ΓΎΓ­Γ§", "Γƒ Γ†ΓΎΓ­Γ§"}));
 		seatBox.setBounds(370, 80, 70, 20);
 		frame.getContentPane().add(seatBox);
 		
-		/**to label pou leei poses theseis iparxoun 
-		 * sinolika stin sigekrimeni sinavlia-zoni*/
-		totalTicketsLabel = new JLabel("Σύνολο Θέσεων: "+connector.availableSeatsSelect ("total_expensive_tickets", concertBox.getSelectedItem().toString()));
+		/**Gives totalTicketsLabel the number of the total tickets for the concert, for the selected ticket type*/
+		totalTicketsLabel = new JLabel("Γ“Γ½Γ­Γ―Γ«Γ― ΓΓΓ³Γ¥ΓΉΓ­: "+connector.availableSeatsSelect ("total_expensive_tickets", concertBox.getSelectedItem().toString()));
 		totalTicketsLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		totalTicketsLabel.setBounds(140, 130, 200, 20);
 		frame.getContentPane().add(totalTicketsLabel);
 		
 
-		/**to label pou dixnei poses diathesimes 
-		 * theseis iparxoun tin epilegmeni sinavlia-zoni*/
-		availableTicketsLabel = new JLabel("Διαθέσιμες Θέσεις: "+connector.availableSeatsSelect ("available_expensive_tickets", concertBox.getSelectedItem().toString()));
+		/**Gives availableTicketsLabel the number of the available tickets for the concert, for the selected ticket type*/
+		availableTicketsLabel = new JLabel("Γ„Γ©Γ΅Γ¨ΓΓ³Γ©Γ¬Γ¥Γ² ΓΓΓ³Γ¥Γ©Γ²: "+connector.availableSeatsSelect ("available_expensive_tickets", concertBox.getSelectedItem().toString()));
 		availableTicketsLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		availableTicketsLabel.setBounds(350, 130, 200, 20);
 		frame.getContentPane().add(availableTicketsLabel);
 		
-		/**to label pou leei poso kanei to kathe isitirio stin sigekrimeni sinavlia-zoni*/
-		ticketsCostLabel = new JLabel("Κόστος εισιτηρίων: "+ connector.availableSeatsSelect ("expensive_ticket_price", concertBox.getSelectedItem().toString()) +" €");
+		/**Gives ticketsCostLabel the price of the ticket for the concert and selected ticket type*/
+		ticketsCostLabel = new JLabel("ΓΓΌΓ³Γ΄Γ―Γ² Γ¥Γ©Γ³Γ©Γ΄Γ§Γ±ΓΓΉΓ­: "+ connector.availableSeatsSelect ("expensive_ticket_price", concertBox.getSelectedItem().toString()) +" β‚¬");
 		ticketsCostLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		ticketsCostLabel.setBounds(10, 130, 200, 20);
 		frame.getContentPane().add(ticketsCostLabel);
 		
-		final JLabel newCostLabel = new JLabel("Νέο Κόστος:");
+		final JLabel newCostLabel = new JLabel("ΓΓΓ― ΓΓΌΓ³Γ΄Γ―Γ²:");
 		newCostLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		newCostLabel.setBounds(22, 186, 70, 20);
 		frame.getContentPane().add(newCostLabel);
 		
-		/**to editor pane sto opio o diaxiristis vazei to 
-		 * neo kostos eisitirion tis sinavlias-seiras*/
+		/**The EditorPane where the admin can change the ticket cost*/
 		final JEditorPane newCostPane = new JEditorPane();
 		newCostPane.setBounds(102, 186, 50, 20);
 		frame.getContentPane().add(newCostPane);
 		
-		/**to editor pane sto opio o diaxiristis vazei to 
-		 * neo arithmo diathesimon theseon tis sinavlias-seiras*/
+		/**The EditorPane where the admin can change the number of available tickets*/
 		final JEditorPane newSeatsPane = new JEditorPane();
 		newSeatsPane.setBounds(543, 186, 50, 20);
 		frame.getContentPane().add(newSeatsPane);
 		
-		final JLabel newSeats = new JLabel("Αλλαγή αριθμού θέσεων :");
+		final JLabel newSeats = new JLabel("ΓΓ«Γ«Γ΅Γ£Γ Γ΅Γ±Γ©Γ¨Γ¬Γ―Γ½ Γ¨ΓΓ³Γ¥ΓΉΓ­ :");
 		newSeats.setBounds(162, 186, 150, 20);
 		frame.getContentPane().add(newSeats);
 		
-		/**to editor pane sto opio o diaxiristis vazei ton
-		 *  neo arithmo ton sinolikon theseon tis sinavlias-seiras*/
+		/**The EditorPane where the admin can change the number of total tickets*/
 		final JEditorPane newTotalSeatsPane = new JEditorPane();
 		newTotalSeatsPane.setBounds(308, 186, 50, 20);
 		frame.getContentPane().add(newTotalSeatsPane);
 		
-		/**to koubi pou tha pragmatopoiei tis allages pou evale o diaxiristis*/
-		final JButton changeBtn = new JButton("Αλλαγή");
+		/**The button that saves the changes*/
+		final JButton changeBtn = new JButton("ΓΓ«Γ«Γ΅Γ£Γ");
 		changeBtn.setBounds(10, 230, 240, 30);
 		frame.getContentPane().add(changeBtn);
 		
-		/**to koubi pou tha diagrafei mia iparxousa sinavlia*/
-		final JButton deleteBtn = new JButton("Διαγραφή");
+		/**The button that deletes a concert from the DB*/
+		final JButton deleteBtn = new JButton("Γ„Γ©Γ΅Γ£Γ±Γ΅Γ¶Γ");
 		deleteBtn.setBounds(260, 230, 100, 30);
 		frame.getContentPane().add(deleteBtn);
 		
-		final JLabel newConcertLabel = new JLabel("Όνομα Συναυλίας:");
+		final JLabel newConcertLabel = new JLabel("ΒΌΓ­Γ―Γ¬Γ΅ Γ“ΓµΓ­Γ΅ΓµΓ«ΓΓ΅Γ²:");
 		newConcertLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		newConcertLabel.setBounds(10, 320, 120, 20);
 		frame.getContentPane().add(newConcertLabel);
 		
-		/**to editor pane sto opio o diaxiristis vazei ton titlo mias neas sinavlias*/
+		/**The EditorPane on which the admin adds a concert title*/
 		final JEditorPane newConcertPane = new JEditorPane();
 		newConcertPane.setBounds(140, 320, 220, 20);
 		frame.getContentPane().add(newConcertPane);
 		
-		final JLabel aZoneSeatsLabel = new JLabel("Α Ζώνη:   Θέσεις:");
+		final JLabel aZoneSeatsLabel = new JLabel("Γ Γ†ΓΎΓ­Γ§:   ΓΓΓ³Γ¥Γ©Γ²:");
 		aZoneSeatsLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		aZoneSeatsLabel.setBounds(10, 370, 120, 20);
 		frame.getContentPane().add(aZoneSeatsLabel);
 		
-		/**to editor pane sto opio o diaxiristis vazei 
-		 * tis sinolikes theseis tis A zonis mias sinavlias*/
+		
+		/**The EditorPane on which the admin adds the total type A tickets of a  concert*/
 		final JEditorPane aZoneSeatsPane = new JEditorPane();
 		aZoneSeatsPane.setBounds(140, 370, 50, 20);
 		frame.getContentPane().add(aZoneSeatsPane);
 		
-		final JLabel aZoneCostLabel = new JLabel("Κόστος:");
+		final JLabel aZoneCostLabel = new JLabel("ΓΓΌΓ³Γ΄Γ―Γ²:");
 		aZoneCostLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		aZoneCostLabel.setBounds(200, 370, 70, 20);
 		frame.getContentPane().add(aZoneCostLabel);
 		
-		/**to editor pane sto opio o diaxiristis vazei
-		 *  to kostos ton theseon tis A zonis mias sinavlias*/
+		/**The EditorPane on which the admin adds the cost of type A tickets of a  concert*/
 		final JEditorPane aZoneCostPane = new JEditorPane();
 		aZoneCostPane.setBounds(280, 370, 50, 20);
 		frame.getContentPane().add(aZoneCostPane);
 		
-		final JLabel bZoneSeatsLabel = new JLabel("Β Ζώνη:   Θέσεις:");
+		final JLabel bZoneSeatsLabel = new JLabel("Γ‚ Γ†ΓΎΓ­Γ§:   ΓΓΓ³Γ¥Γ©Γ²:");
 		bZoneSeatsLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		bZoneSeatsLabel.setBounds(10, 420, 120, 20);
 		frame.getContentPane().add(bZoneSeatsLabel);
 		
-		/**to editor pane sto opio o diaxiristis vazei tis 
-		 * sinolikes theseis tis B zonis mias sinavlias*/
+		/**The EditorPane on which the admin adds the total type B tickets of a  concert*/
 		final JEditorPane bZoneSeatsPane = new JEditorPane();
 		bZoneSeatsPane.setBounds(140, 420, 50, 20);
 		frame.getContentPane().add(bZoneSeatsPane);
 		
-		final JLabel bZoneCostLabel = new JLabel("Κόστος:");
+		final JLabel bZoneCostLabel = new JLabel("ΓΓΌΓ³Γ΄Γ―Γ²:");
 		bZoneCostLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		bZoneCostLabel.setBounds(200, 420, 70, 20);
 		frame.getContentPane().add(bZoneCostLabel);
 		
-		/**to editor pane sto opio o diaxiristis vazei 
-		 * to kostos ton theseon tis B zonis mias sinavlias*/
+		/**The EditorPane on which the admin adds the cost of type B tickets of a  concert*/
 		final JEditorPane bZoneCostPane = new JEditorPane();
 		bZoneCostPane.setBounds(280, 420, 50, 20);
 		frame.getContentPane().add(bZoneCostPane);
 		
-		final JLabel cZoneSeatsLabel = new JLabel("Γ Ζώνη:   Θέσεις:");
+		final JLabel cZoneSeatsLabel = new JLabel("Γƒ Γ†ΓΎΓ­Γ§:   ΓΓΓ³Γ¥Γ©Γ²:");
 		cZoneSeatsLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		cZoneSeatsLabel.setBounds(10, 470, 120, 20);
 		frame.getContentPane().add(cZoneSeatsLabel);
 		
-		/**to editor pane sto opio o diaxiristis vazei tis
-		 *  sinolikes theseis tis Γ zonis mias sinavlias*/
+		/**The EditorPane on which the admin adds the total type C tickets of a  concert*/
 		final JEditorPane cZoneSeatsPane = new JEditorPane();
 		cZoneSeatsPane.setBounds(140, 470, 50, 20);
 		frame.getContentPane().add(cZoneSeatsPane);
 		
-		final JLabel cZoneCostLabel = new JLabel("Κόστος:");
+		final JLabel cZoneCostLabel = new JLabel("ΓΓΌΓ³Γ΄Γ―Γ²:");
 		cZoneCostLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		cZoneCostLabel.setBounds(200, 470, 70, 20);
 		frame.getContentPane().add(cZoneCostLabel);
 		
-		/**to editor pane sto opio o diaxiristis vazei 
-		 * to kostos ton theseon tis Γ zonis mias sinavlias*/
+		/**The EditorPane on which the admin adds the cost of type C tickets of a  concert*/
 		final JEditorPane cZoneCostPane = new JEditorPane();
 		cZoneCostPane.setBounds(280, 470, 50, 20);
 		frame.getContentPane().add(cZoneCostPane);
 		
-		/**to button pou tha eisagei tin nea sinavlia stin vasi dedomenon*/
-		final JButton newBtn = new JButton("Εισαγωγή");
+		/**The button to insert the new concert to the db*/
+		final JButton newBtn = new JButton("Γ…Γ©Γ³Γ΅Γ£ΓΉΓ£Γ");
 		newBtn.setBounds(10, 530, 240, 30);
 		frame.getContentPane().add(newBtn);
 		
-		/**to button pou mas pigenei sto parathiro tou xristi*/
+		/**The button that takes us to the User gui*/
 		final JButton btnUser = new JButton("\u03A7\u03C1\u03AE\u03C3\u03C4\u03B7\u03C2");
 		btnUser.setBounds(10, 11, 89, 23);
 		frame.getContentPane().add(btnUser);
@@ -262,7 +248,7 @@ public class AdminGui
 		label2.setBounds(10, 583, 260, 21);
 		frame.getContentPane().add(label2);
 		
-		/**to button pou anigei to parathiro me ta statistika*/
+		/**the button that takes us to the stats gui*/
 		final JButton btnShowStats = new JButton("\u0395\u03BC\u03C6\u03AC\u03BD\u03B9\u03C3\u03B7 \u03A3\u03C4\u03B1\u03C4\u03B9\u03C3\u03C4\u03B9\u03BA\u03CE\u03BD");
 		btnShowStats.setBounds(8, 624, 240, 30);
 		frame.getContentPane().add(btnShowStats);
@@ -277,9 +263,7 @@ public class AdminGui
 		 */
 		
 		
-		/**an paei o xristeis na klisei to parathiro
-		 * prin klisei to frame, klinei ton connector
-		 */
+		/**If the user tries to close the window, closes the db connector first	 */
 		frame.addWindowListener(new WindowAdapter() 
 		{
 			@Override
@@ -290,8 +274,7 @@ public class AdminGui
 		});
 		
 		
-		/**otan patame to koubi btnShowStats tha klinei to 
-		 * parathiro, ke tha anigei ena parathiro StatsGui*/
+		/**If we press the button btnShowStats, closes the frame and opens a StatsGui frame*/
 		btnShowStats.addActionListener(
 		new ActionListener() 
 		{
@@ -304,11 +287,10 @@ public class AdminGui
 		});
 		
 		
-		/**otan dialegoume mia nea sinavlia apo to comboBox, tha ananeonoume ta labels*/
+		/**When we select a different concert from the combobox, refreshes the labels as necessary*/
 		concertBox.addActionListener(
 		new ActionListener()
         {
-			/**to action ginete otan dialegoume kapio item apo to combobox*/
 			public void actionPerformed(final ActionEvent itemSelected)
             {
 	            refreshLabels();
@@ -316,11 +298,10 @@ public class AdminGui
         });
 		
 		
-		/**otan dialegoume mia nea seira apo to comboBox, tha ananeonoume ta labels*/
+		/**When we select a different ticket type from the combobox, refreshes the labels as necessary*/
 		seatBox.addActionListener(
         new ActionListener()
         {
-        	/**to action ginete otan dialegoume kapio item apo to combobox*/
         	public void actionPerformed(final ActionEvent itemSelected)
             {
         		refreshLabels();
@@ -328,31 +309,26 @@ public class AdminGui
         });
 		
 		
-		/**otan patame to changeBtn tha pername tis times pou dosame sta panes
-		 * stin vasi dedomenon xrisimopoiontas to update function tou Database_connector*/
+		/**When we press the changeBtn button, updates the DB with the update method of the connector*/
 		changeBtn.addActionListener(
 		new ActionListener() 
 		{
 			public void actionPerformed(final ActionEvent buttonPressed) 
 			{
-				/** elenxoume an o diaxiristis 
-				 * afise kapio field adeio
-				 */
+				/** Checks if a required field is empty, and show warning if it is */
 				if(newSeatsPane.getText().isEmpty()||newTotalSeatsPane.getText().isEmpty()||newCostPane.getText().isEmpty())
 				{
-					JOptionPane.showMessageDialog(frame, "Κάποιο Field Είναι Αδειο");
+					JOptionPane.showMessageDialog(frame, "ΓΓΓ°Γ―Γ©Γ― Field Γ…ΓΓ­Γ΅Γ© ΓΓ¤Γ¥Γ©Γ―");
 				}
 				
-				/** elenxoume an o diaxiristis evale keimeno 
-				 * se kapio field pou perimenei arithmo
-				 */
+				/** Checks if the admin put a String instead of a number and show warning if he did */
 				else if(!(StringCheck.isNumeric(newSeatsPane.getText()))||!(StringCheck.isNumeric(newTotalSeatsPane.getText())) ||!(StringCheck.isNumeric(newCostPane.getText())))
 				{
-					JOptionPane.showMessageDialog(frame, "Κάποιο Field Εχει Κείμενο Αντί Για Αριθμό");
+					JOptionPane.showMessageDialog(frame, "ΓΓΓ°Γ―Γ©Γ― Field Γ…Γ·Γ¥Γ© ΓΓ¥ΓΓ¬Γ¥Γ­Γ― ΓΓ­Γ΄Γ ΓƒΓ©Γ΅ ΓΓ±Γ©Γ¨Γ¬ΓΌ");
 				}
 				else
 				{
-					/**vriskoume tin seira eisitirion tis sinavlias pou theloume na epeksergastoume*/
+				/**Updates the tickets of the appropriate type on the DB*/
 		           	if ( seatBox.getSelectedIndex() == A_SEIRA )
 		           	{
 		           		connector.update(concertBox.getSelectedItem().toString(), "available_expensive_tickets", newSeatsPane.getText(),"total_expensive_tickets",newTotalSeatsPane.getText(), "expensive_ticket_price", newCostPane.getText());
@@ -371,8 +347,7 @@ public class AdminGui
 	        }
 		});
 	
-		/**otan patame to koubi deleteBtn, diagrafoume tin epilegmeni sinavlia apo 
-		 * tin vasi dedomenon, me to function delete tou Database_connector*/
+		/**If we press the deleteBtn Button, delete the selected concert from the DB with the delete function of the connector*/
 		deleteBtn.addActionListener(
 		new ActionListener() 
 		{
@@ -386,44 +361,38 @@ public class AdminGui
 			}
 		});
 		
-		/**otan patame to newBtn, prosthetoume mia sinavlia stin
-		 *  vasi dedomenon me ta values pou valame sta panes*/
+		/**If we press the newBtn button, we create a new concert on the DB with the values of the panes*/
 		newBtn.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(final ActionEvent buttonPressed)
 			{
-				/** elenxoume an o diaxiristis 
-				 * afise kapio field adeio
-				 */
+				
+				/** Checks if a required field is empty, and show warning if it is */
 				if(newConcertPane.getText().isEmpty()||aZoneSeatsPane.getText().isEmpty()||aZoneCostPane.getText().isEmpty()
 						||bZoneSeatsPane.getText().isEmpty()||bZoneCostPane.getText().isEmpty()
 						||cZoneSeatsPane.getText().isEmpty()||cZoneCostPane.getText().isEmpty())
 				{
-					JOptionPane.showMessageDialog(frame, "Κάποιο Field Είναι Αδειο");
+					JOptionPane.showMessageDialog(frame, "ΓΓΓ°Γ―Γ©Γ― Field Γ…ΓΓ­Γ΅Γ© ΓΓ¤Γ¥Γ©Γ―");
 				}
 				
-				/** elenxoume an o diaxiristis evale keimeno 
-				 * se kapio field pou perimenei arithmo
-				 */
+				/** Checks if the admin put a String instead of a number and show warning if he did */
 				else if (!StringCheck.isNumeric(aZoneSeatsPane.getText())||!StringCheck.isNumeric(aZoneCostPane.getText())
 						||!StringCheck.isNumeric(bZoneSeatsPane.getText())||!StringCheck.isNumeric(bZoneCostPane.getText())
 						||!StringCheck.isNumeric(cZoneSeatsPane.getText())||!StringCheck.isNumeric(cZoneCostPane.getText()))
 				{
-					JOptionPane.showMessageDialog(frame, "Κάποιο Field Εχει Κείμενο Αντί Για Αριθμό");
+					JOptionPane.showMessageDialog(frame, "ΓΓΓ°Γ―Γ©Γ― Field Γ…Γ·Γ¥Γ© ΓΓ¥ΓΓ¬Γ¥Γ­Γ― ΓΓ­Γ΄Γ ΓƒΓ©Γ΅ ΓΓ±Γ©Γ¨Γ¬ΓΌ");
 				}
 				else
 				{
 					connector.create(newConcertPane.getText(), aZoneSeatsPane.getText(),aZoneCostPane.getText() , bZoneSeatsPane.getText(),bZoneCostPane.getText() , cZoneCostPane.getText(), cZoneSeatsPane.getText());
-					/**dinoume tous titlous ton sinavlion apo tin vasi dedomenon 
-					 * sto concertBox me to function titleSelect() tou Database_connector*/
+					/**We refresh the concertBox to include the new concert*/
 					concertBox.setModel(connector.titleSelect());
 					seatBox.setSelectedIndex(0);
 				}
 			}
 		});
 		
-		/**otan patame to btnUser, tha klinei afto 
-		 * to parathiro ke anigei ena parathiro Gui*/
+		/**If we click the btnUser button, closes this frame and opens a user frame*/
 		btnUser.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(final ActionEvent buttonPressed) 
@@ -436,27 +405,27 @@ public class AdminGui
 		
 	}
 	
-	/**ananeonei ta labels tin kaloume kathe fora 
-	 * pou kanoume kapia allagi stin vasi dedomenon*/
+	/**Refreshes the labels
+	 * We call it whenever there is a change in the DB*/
 	public void refreshLabels()
 	{
 		if ( seatBox.getSelectedIndex() == A_SEIRA )
         {
-			totalTicketsLabel.setText("Σύνολο Θέσεων: "+connector.availableSeatsSelect ("total_expensive_tickets", concertBox.getSelectedItem().toString()));
-            availableTicketsLabel.setText("Διαθέσιμες Θέσεις: "+connector.availableSeatsSelect ("available_expensive_tickets", concertBox.getSelectedItem().toString()));
-            ticketsCostLabel.setText("Κόστος εισιτηρίων: "+ Integer.parseInt(connector.availableSeatsSelect ("expensive_ticket_price", concertBox.getSelectedItem().toString())));
+			totalTicketsLabel.setText("Γ“Γ½Γ­Γ―Γ«Γ― ΓΓΓ³Γ¥ΓΉΓ­: "+connector.availableSeatsSelect ("total_expensive_tickets", concertBox.getSelectedItem().toString()));
+            availableTicketsLabel.setText("Γ„Γ©Γ΅Γ¨ΓΓ³Γ©Γ¬Γ¥Γ² ΓΓΓ³Γ¥Γ©Γ²: "+connector.availableSeatsSelect ("available_expensive_tickets", concertBox.getSelectedItem().toString()));
+            ticketsCostLabel.setText("ΓΓΌΓ³Γ΄Γ―Γ² Γ¥Γ©Γ³Γ©Γ΄Γ§Γ±ΓΓΉΓ­: "+ Integer.parseInt(connector.availableSeatsSelect ("expensive_ticket_price", concertBox.getSelectedItem().toString())));
         } 
         else if ( seatBox.getSelectedIndex() == B_SEIRA )
         {
-        	totalTicketsLabel.setText("Σύνολο Θέσεων: "+connector.availableSeatsSelect ("total_normal_tickets", concertBox.getSelectedItem().toString()));
-            availableTicketsLabel.setText("Διαθέσιμες Θέσεις: "+connector.availableSeatsSelect ("available_normal_tickets", concertBox.getSelectedItem().toString()));
-            ticketsCostLabel.setText("Κόστος εισιτηρίων: "+ Integer.parseInt(connector.availableSeatsSelect ("normal_ticket_price", concertBox.getSelectedItem().toString())));
+        	totalTicketsLabel.setText("Γ“Γ½Γ­Γ―Γ«Γ― ΓΓΓ³Γ¥ΓΉΓ­: "+connector.availableSeatsSelect ("total_normal_tickets", concertBox.getSelectedItem().toString()));
+            availableTicketsLabel.setText("Γ„Γ©Γ΅Γ¨ΓΓ³Γ©Γ¬Γ¥Γ² ΓΓΓ³Γ¥Γ©Γ²: "+connector.availableSeatsSelect ("available_normal_tickets", concertBox.getSelectedItem().toString()));
+            ticketsCostLabel.setText("ΓΓΌΓ³Γ΄Γ―Γ² Γ¥Γ©Γ³Γ©Γ΄Γ§Γ±ΓΓΉΓ­: "+ Integer.parseInt(connector.availableSeatsSelect ("normal_ticket_price", concertBox.getSelectedItem().toString())));
         } 
         else 
         {
-        	totalTicketsLabel.setText("Σύνολο Θέσεων: "+connector.availableSeatsSelect ("total_cheap_tickets", concertBox.getSelectedItem().toString()));
-            availableTicketsLabel.setText("Διαθέσιμες Θέσεις: "+connector.availableSeatsSelect ("available_cheap_tickets", concertBox.getSelectedItem().toString()));
-            ticketsCostLabel.setText("Κόστος εισιτηρίων: "+ Integer.parseInt(connector.availableSeatsSelect ("cheap_ticket_price", concertBox.getSelectedItem().toString())));
+        	totalTicketsLabel.setText("Γ“Γ½Γ­Γ―Γ«Γ― ΓΓΓ³Γ¥ΓΉΓ­: "+connector.availableSeatsSelect ("total_cheap_tickets", concertBox.getSelectedItem().toString()));
+            availableTicketsLabel.setText("Γ„Γ©Γ΅Γ¨ΓΓ³Γ©Γ¬Γ¥Γ² ΓΓΓ³Γ¥Γ©Γ²: "+connector.availableSeatsSelect ("available_cheap_tickets", concertBox.getSelectedItem().toString()));
+            ticketsCostLabel.setText("ΓΓΌΓ³Γ΄Γ―Γ² Γ¥Γ©Γ³Γ©Γ΄Γ§Γ±ΓΓΉΓ­: "+ Integer.parseInt(connector.availableSeatsSelect ("cheap_ticket_price", concertBox.getSelectedItem().toString())));
         }
 	}
 }
