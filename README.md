@@ -1,5 +1,5 @@
 # Ticket Reservation Program Assignment
-A program written in Java for the "Software Engineering" class of Computer Systems Engineering on Pireaus University of Applied Sciences
+A program written in Java for the "Software Engineering" class on Pireaus University of Applied Sciences
 
 The program consists of 3 different frames:
 A frame for the user to purchase tickets for a concert
