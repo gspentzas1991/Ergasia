@@ -12,16 +12,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-/** I klasi i opia dimiourgei to frame tou
- * parathirou gia ta statistika*/
+/**The class that creates the Stats frame*/
 public class StatsGui {
 
 	
 
-	/**i sindesi me tin vasi dedomenon*/
+	/**The connector to the DB*/
 	private transient Database_connector connector;
 	
-	/**to frame tou programmatos*/
 	public transient JFrame frame;
 
 	
@@ -43,21 +41,20 @@ public class StatsGui {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		/**sindeomaste me tin vasi dedomenon*/
+		/**Connects to the DB*/
 		connector= new Database_connector();
 		connector.startConn();
 		
-		/**to comboBox pou periexei tis sinavlies*/
+		/**The Combobox concertBox has the concert titles*/
 		final JComboBox<String> concertBox = new JComboBox<>();
 		concertBox.setBounds(141, 53, 314, 20);
 		frame.getContentPane().add(concertBox);
 		
-		/**dinoume tous titlous ton sinavlion apo tin vasi dedomenon sto 
-		 * concertBox me to function titleSelect() tou Database_connector*/
+		/**We give the concert titles to the concertBox from the DB through the titleSelect() method of the connector*/
 		concertBox.setModel(connector.titleSelect());
 		
-		/**to button pou tha mas paei sto parathiro tou diaxiristi*/
-		final JButton btnAdmin = new JButton("Διαχειριστής");
+		/**The button that takes us to the admin frame*/
+		final JButton btnAdmin = new JButton("Γ„Γ©Γ΅Γ·Γ¥Γ©Γ±Γ©Γ³Γ΄ΓΓ²");
 		btnAdmin.setBounds(10, 11, 89, 23);
 		frame.getContentPane().add(btnAdmin);
 		
@@ -95,59 +92,50 @@ public class StatsGui {
 		frame.getContentPane().add(label7);
 		
 		
-		/**to label pou leei tis sinolikes theseis tis A seiras tis sinavlias
-		*ipologizete me to function availableSeatsSelect tou Database_connector*/
+		/**The label that shows the total tickets of type A for the concert*/
 		final JLabel aTotal = new JLabel(connector.availableSeatsSelect ("total_expensive_tickets", concertBox.getSelectedItem().toString()));
 		aTotal.setBounds(90, 156, 46, 14);
 		frame.getContentPane().add(aTotal);
 		
-		/**to label pou leei tis diathesimes theseis tis A seiras tis sinavlias
-		*ipologizete me to function availableSeatsSelect tou Database_connector*/
+		/**The label that shows the available tickets of type A for the concert*/
 		final JLabel aFree = new JLabel(connector.availableSeatsSelect ("available_expensive_tickets", concertBox.getSelectedItem().toString()));
 		aFree.setBounds(370, 156, 46, 14);
 		frame.getContentPane().add(aFree);
 
-		/**to label pou leei tis poulimenes theseis tis A seiras tis sinavlias.
-		*ipologizete aferontas tin timi sto aFree label apo tin timi sto aTotal label*/
+		/**The label that shows the sold tickets of type A for the concert*/
 		final JLabel aSold = new JLabel( Integer.toString(Integer.parseInt(aTotal.getText()) - Integer.parseInt(aFree.getText())  ) );
 		aSold.setBounds(220, 156, 46, 14);
 		frame.getContentPane().add(aSold);
 		
 		
 
-		/**to label pou leei tis sinolikes theseis tis B seiras tis sinavlias
-		//ipologizete me to function availableSeatsSelect tou Database_connector*/
+		/**The label that shows the total tickets of type B for the concert*/
 		final JLabel bTotal = new JLabel(connector.availableSeatsSelect ("total_normal_tickets", concertBox.getSelectedItem().toString()));
 		bTotal.setBounds(90, 186, 46, 14);
 		frame.getContentPane().add(bTotal);
 
-		/**to label pou leei tis diathesimes theseis tis B seiras tis sinavlias
-		*ipologizete me to function availableSeatsSelect tou Database_connector*/
+		/**The label that shows the available tickets of type B for the concert*/
 		final JLabel bFree = new JLabel(connector.availableSeatsSelect ("available_normal_tickets", concertBox.getSelectedItem().toString()));
 		bFree.setBounds(370, 186, 46, 14);
 		frame.getContentPane().add(bFree);
-
-		/**to label pou leei tis poulimenes theseis tis B seiras tis sinavlias.
-		*ipologizete aferontas tin timi sto bFree label apo tin timi sto bTotal label*/
+		
+		/**The label that shows the sold tickets of type B for the concert*/
 		final JLabel bSold = new JLabel( Integer.toString( Integer.parseInt(bTotal.getText()) - Integer.parseInt(bFree.getText())  ) );
 		bSold.setBounds(220, 186, 46, 14);
 		frame.getContentPane().add(bSold);
 		
 		
-		/**to label pou leei tis sinolikes theseis tis Γ seiras tis sinavlias
-		*ipologizete me to function availableSeatsSelect tou Database_connector*/
+		/**The label that shows the total tickets of type C for the concert*/
 		final JLabel cTotal = new JLabel(connector.availableSeatsSelect ("total_cheap_tickets", concertBox.getSelectedItem().toString()));
 		cTotal.setBounds(90, 216, 46, 14);
 		frame.getContentPane().add(cTotal);
 		
-		/**to label pou leei tis diathesimes theseis tis Γ seiras tis sinavlias
-		*ipologizete me to function availableSeatsSelect tou Database_connector*/
+		/**The label that shows the available tickets of type C for the concert*/
 		final JLabel cFree = new JLabel(connector.availableSeatsSelect ("available_cheap_tickets", concertBox.getSelectedItem().toString()));
 		cFree.setBounds(370, 216, 46, 14);
 		frame.getContentPane().add(cFree);
 
-		/**to label pou leei tis poulimenes theseis tis Γ seiras tis sinavlias.
-		*ipologizete aferontas tin timi sto cFree label apo tin timi sto cTotal label*/
+		/**The label that shows the sold tickets of type C for the concert*/
 		final JLabel cSold =new JLabel( Integer.toString( Integer.parseInt(cTotal.getText()) - Integer.parseInt(cFree.getText())  ) );
 		cSold.setBounds(220, 216, 46, 14);
 		frame.getContentPane().add(cSold);
@@ -158,8 +146,7 @@ public class StatsGui {
 		 */
 		
 		
-		/**an paei o xristeis na klisei to parathiro
-		 * prin klisei to frame, klinei ton connector
+		/**If the user closes the program, close the DB connection
 		 */
 		frame.addWindowListener(new WindowAdapter() 
 		{
@@ -172,8 +159,7 @@ public class StatsGui {
 		});
 	
 		
-		/**otan epilegoume kapia sinavlia, theloume ta 
-		 * labels na pernoun tis antistixes times*/
+		/**When we select a concert, refreshes the labels to the appropriate values*/
 		concertBox.addActionListener(
         new ActionListener()
         {
@@ -194,8 +180,7 @@ public class StatsGui {
           });
 		
 		
-		/**otan patame to btnAdmin tha klinei afto to parathiro
- 		*ke tha anigei ena parathiro AdminGui*/
+		/**When we click the btnAdmin button closes the frame and creates an AdminGui window*/
 		btnAdmin.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(final ActionEvent buttonPressed) 
