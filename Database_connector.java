@@ -4,26 +4,25 @@ import java.sql.*;
 
 import javax.swing.DefaultComboBoxModel;
 
-/** I klasi i kanei tin sindesi
- * me tin vasi dedomenon*/
+/**The class that makes the connection to the DB*/
 public class Database_connector 
 {
 	/** */
 	private  static Connection conn;
-	/** to url tis vasis dedomenon */
+	/** The url of the DB */
     private final transient String url;
-    /** to onoma tis vasis dedomenon */
+    /** The DB's name */
     private final transient String dbName;
-    /** o driver tou jdbc*/
+    /** JDBC's driver*/
     private final transient String driver;
-    /** to username tis vasis dedomenon */
+    /** The username for the DB connection */
     private final transient String userName;
-    /** to password tis vasis dedomenon */
+    /** The password for the DB connection */
     private final transient String password;
     
     
-    /**Constractor.
-    *Edo dinoume ta stoixia tis mysql vasis dedomenon mas*/
+    /**Constructor
+    */
     public Database_connector( ) 
     {
     	this.url = "jdbc:mysql://localhost:3306/";
@@ -33,7 +32,7 @@ public class Database_connector
         this.password = "J5316826";
     }
     
-    /**Ksekiname mia sindesi me tin Mysql*/
+    /**Creates a connection with the DB*/
     public void startConn () 
     {
         try 
@@ -63,7 +62,7 @@ public class Database_connector
         }
     }
     
-    /**klinoume tin sindesi me tin mysql*/
+    /**Closes the connection to the DB*/
     
     public void stopConn() 
     {
@@ -77,18 +76,17 @@ public class Database_connector
         }
     }
 
-    /**Select query gia tous titlous ton sinavlion
-    *epistrefei ena comboboxmodel pou periexei olous tous titlous*/
+    /**Select query for the concert titles
+    *Returns a comboboxmodel that includes all the concert titles*/
     public DefaultComboBoxModel<String> titleSelect ()
     {
 
-    	/**dimiourgoume ena ComboBox to opio periexei olous tous titlous mesa*/
+    	/**The comboboxModel that will include all the concert titles*/
         final DefaultComboBoxModel<String> concertBoxModel = new DefaultComboBoxModel<>();
         try 
         {
             final Statement select = conn.createStatement();
-            /**to query pou mas epistrefei olous tous
-             *  titlous ton sinavlion apo tin vasi dedomenon*/
+            /**The query that returns all the concert titles from the DB*/
             final ResultSet result = select.executeQuery("SELECT title FROM concert;");
             try
             {
@@ -102,7 +100,7 @@ public class Database_connector
             {
     			e.printStackTrace();
     		}
-            /**klinoume ta select ke result*/
+            /**closes the select and result statements*/
             select.close();
             result.close();
         } 
@@ -114,10 +112,9 @@ public class Database_connector
         return concertBoxModel;
     }
 
-    /**Select query pou mas epistrefei ton arithmo i to kostos theseon
-	*category: i stili tis vasis dedomenon pou theloume
-	*title: o titlos tis sinavlias pou theloume
-	*epistrefei ena String me ton arithmo theseon, i kostos theseon*/
+    /**Select query that returns the number or cost of tickets
+	*category: the column of the DB we want to get data from
+	*title: the title of the concert*/
     
     public String availableSeatsSelect (final String category, final String title)
     {
@@ -126,17 +123,14 @@ public class Database_connector
         {
             final Statement select = conn.createStatement();
             final ResultSet result = select.executeQuery("SELECT "+ category +" FROM concert WHERE title = \""+ title +"\";");
-            /**to resultSet ksekinaei prin to proto row, gia afto 
-             * prepei na kanoume ena .next() gia na diksei sto proto row*/
+            
             if(result.next())
             {
-            	/**to string returnString pernei tin timi pou exei to proto 
-            	 * row tis stilis "category" (opou category, to string pou dosame otan 
-            	 * kalesame tin sinartisi)*/
-	            returnString = result.getString(category);
-	            /**klinoume ta select ke result*/
-	            select.close();
-	            result.close();
+            	/**The String returnString takes the value of the first row of the "category" column (where category is the String we called the method with)*/
+	        returnString = result.getString(category);
+           	/**closes the select and result statements*/
+	        select.close();
+	        result.close();
             }
         }
         catch (SQLException ex) 
@@ -147,10 +141,10 @@ public class Database_connector
     }
   
     
-    /**Update query gia na aferesoume theseis apo ton arithmo ton diathesimon theseon, meta apo mia agora eisitirion
-    *category: i stili tis mysql pou theloume na alaksoume
-    *title: o titlos tis sinavlias pou epileksame
-    *seatcount: o arithmos theseon pou tha aferethoun apo ton arithmo diathesimon theseon*/
+    /**Update query that decreses the available tickets on the DB after a purchase
+    *category: the column of the DB we want to get data from
+    *title: the title of the concert
+    *seatcount: the number of tickets that will be reducted*/
     public void updateAvailableSeats(final String category,final String title,final String seatcount) 
     {
         try 
@@ -165,13 +159,13 @@ public class Database_connector
         }
     }
     
-    /**update query pou alazei ton arithmo ton sinolikon theseon, ton diathesimon theseon ke tis timis tis kathe thesis
-    *title: o titlos tis sinavlias pou epileksame
-    *seat_category: i stili tis mysql pou exei ton arithmo ton diathesimon theseon tis seiras
-    *seatcount: o neos arithmos diathesimon theseon tis sinavlias
-    *total_seat_category:  i stili tis mysql pou exei ton arithmo ton sinolikon theseon tis seiras
-    *total_seat_count: o neos arithmos sinolikon theseon tis sinavlias
-    *price_category: i stili tis mysql pou exei to kostos ton eisitirion gia tin sigekrimeni seira*/
+    /**update querty that changes the amount of total tickets, available tickets and cost of each ticket
+    *title: the title of the concert
+    *seat_category: the name of the column on the DB that has the appropriate type of tickets (A B or C) that we want to change
+    *seatcount: the new number of available tickets
+    *total_seat_category:the name of the column on the DB that has the number of available tickets that we want to change
+    *total_seat_count: the new number of total tickets
+    *price_category: the name of the column on the DB that has the price of the tickets */
     public void update(final String title,final String seatCategory,final String seatcount,final String totalSeatCategory,final String totalSeatCount,final String priceCategory,final String price) 
     {
         try 
@@ -188,14 +182,14 @@ public class Database_connector
         }
     }
     
-    /**to query to opio tha prosthetei mia nea sinavlia stin vasi dedomenon
-    *title: o titlos tis neas sinavlias
-    *expSeatsNo: o sinolikos arithmos theseon A seiras
-    *expSeatsCost: to kostos ton eisitirion tis A seiras
-    *normSeatsNo:o sinolikos arithmos theseon B seiras
-    *normSeatsCost: to kostos ton eisitirion tis B seiras
-    *cheapSteasNo: o sinolikos arithmos theseon Ã seiras
-    *cheapSeatsCost: to kostos ton eisitirion tis Ã seiras*/
+    /**The query that adds a new concert to the DB
+    *title:The concert title
+    *expSeatsNo: The total number of type A tickets
+    *expSeatsCost: the cost for type A tickets
+    *normSeatsNo: The total number of type B tickets
+    *normSeatsCost: the cost for type B tickets
+    *cheapSteasNo:  The total number of type C tickets
+    *cheapSeatsCost: the cost for type C tickets*/
     public void create(final String title,final String expSeatsNo,final String expSeatsCost,final String normSeatsNo,final String normSeatsCost,final String cheapSeatsNo,final String cheapSeatsCost)
     {
     	final String quary="INSERT INTO concert (`title`, `cheap_ticket_price`, `available_cheap_tickets`, `"
@@ -218,8 +212,8 @@ public class Database_connector
         }
     }
     
-    /**to query pou diagrafei mia sinavlia apo tin vasi dedomenon
-    *title: o titlos tis sinavlias pou tha diagrafei*/
+    /**The query that deletes a concert from the DB
+    *title: The title of the concert to be deleted*/
     public void delete(final String title) 
     {
         try 
